@@ -24,15 +24,91 @@
     <h1>Data Scrapper</h1>
     <div>
       <div>
-        <div><p>klfsadjkl</p></div>
-        <div><p>fdklfjdas</p></div>
-        <div><p>fdklfjdas</p></div>
-        <div><p>fdklfjdas</p></div>
-        <div><p>fdklfjdas</p></div>
-        <div><p>fdklfjdas</p></div>
-        <div><p>fdklfjdas</p></div>
-        <div><p>fdklfjdas</p></div>
-        <div><p>fdklfjdas</p></div>
+        <div>
+          <p>klfsadjkl</p>
+          <img
+            src="https://onemg.gumlet.io/images/c_fit,h_150,w_150,f_auto,q_auto/q9xnukhrycqpcypv7aeg/tata-1mg-apple-cider-vinegar-probiotic-plus-raw-unfiltered-unpasteurized-with-the-mother.jpg"
+            alt="pic"
+          />
+          <span>Span Tag</span>
+          <!-- <p>prize: 3999</p> -->
+          <div>
+            <ul>
+              <li>list 1</li>
+              <li>list 2</li>
+              <li>list 3</li>
+              <li>list 4</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <p>klfsadjkl</p>
+          <img
+            src="https://onemg.gumlet.io/images/c_fit,h_150,w_150,f_auto,q_auto/q9xnukhrycqpcypv7aeg/tata-1mg-apple-cider-vinegar-probiotic-plus-raw-unfiltered-unpasteurized-with-the-mother.jpg"
+            alt="pic"
+          />
+          <span>Span Tag</span>
+          <p>prize: 3999</p>
+          <div>
+            <ul>
+              <li>list 1</li>
+              <li>list 2</li>
+              <li>list 3</li>
+              <li>list 4</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <p>klfsadjkl</p>
+          <img
+            src="https://onemg.gumlet.io/images/c_fit,h_150,w_150,f_auto,q_auto/q9xnukhrycqpcypv7aeg/tata-1mg-apple-cider-vinegar-probiotic-plus-raw-unfiltered-unpasteurized-with-the-mother.jpg"
+            alt="pic"
+          />
+          <span>Span Tag</span>
+          <p>prize: 3999</p>
+          <div>
+            <ul>
+              <li>list 1</li>
+              <li>list 2</li>
+              <li>list 3</li>
+              <li>list 4</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <p>klfsadjkl</p>
+          <img
+            src="https://onemg.gumlet.io/images/c_fit,h_150,w_150,f_auto,q_auto/q9xnukhrycqpcypv7aeg/tata-1mg-apple-cider-vinegar-probiotic-plus-raw-unfiltered-unpasteurized-with-the-mother.jpg"
+            alt="pic"
+          />
+          <span>Span Tag</span>
+          <p>prize: 3999</p>
+          <div>
+            <ul>
+              <li>list 1</li>
+              <li>list 2</li>
+              <li>list 3</li>
+              <li>list 4</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <p>klfsadjkl</p>
+          <img
+            src="https://onemg.gumlet.io/images/c_fit,h_150,w_150,f_auto,q_auto/q9xnukhrycqpcypv7aeg/tata-1mg-apple-cider-vinegar-probiotic-plus-raw-unfiltered-unpasteurized-with-the-mother.jpg"
+            alt="pic"
+          />
+          <span>Span Tag</span>
+          <p>prize: 3999</p>
+          <div>
+            <ul>
+              <li>list 1</li>
+              <li>list 2</li>
+              <li>list 3</li>
+              <li>list 4</li>
+            </ul>
+          </div>
+        </div>
       </div>
       <br />
       <a href="https://javascript.info/searching-elements-dom" target="_blank"
@@ -40,12 +116,6 @@
       >
       <br />
       <br />
-      <div>
-        <img
-          src="https://onemg.gumlet.io/images/c_fit,h_150,w_150,f_auto,q_auto/q9xnukhrycqpcypv7aeg/tata-1mg-apple-cider-vinegar-probiotic-plus-raw-unfiltered-unpasteurized-with-the-mother.jpg"
-          alt="pic"
-        />
-      </div>
     </div>
     <div id="selectedKeys">
       <p id="pageUrl"></p>
@@ -82,11 +152,16 @@
       </select>
       <br />
       <label for="">Css selector</label>
-      <input type="checkbox" name="selector" id="selector" />
+      <input
+        type="checkbox"
+        name="selector"
+        id="selector"
+        defaultValue="false"
+      />
       <label for="">Multiple select</label>
       <input type="checkbox" name="multiple" id="multiple" />
       <input type="submit" />
-      <button onclick="cancelAddNewSelector()">Cancel</button>
+      <button type="reset" onclick="cancelAddNewSelector()">Cancel</button>
     </form>
 
     <div>
@@ -109,7 +184,8 @@
   let handleOnSelector = document.getElementById("selector");
   let handleMultiple = document.getElementById("multiple");
   let multipleElement = false;
-  let selectedElementSelector = "";
+  let selectedElementSelector = [];
+  let selectorMode = false;
 
   function addNewSelector() {
     const form = document.getElementById("formData");
@@ -117,6 +193,7 @@
   }
   function cancelAddNewSelector() {
     const form = document.getElementById("formData");
+    form.reset();
     // form.style.display = "none";
   }
 
@@ -127,10 +204,13 @@
       disableLink();
       // selectElement(event.target.checked);
       let classSelector = [];
+      selectorMode = true;
       turnOnSelector(classSelector);
     } else {
       document.getElementById("selectorMode").disabled = true;
       // selectElement(false);
+      turnOnSelector(false);
+      selectorMode = false;
     }
   };
   window.onload = function () {
@@ -163,67 +243,78 @@
     return -1;
   }
   function selectElement(checked) {
-    console.log("selected ", checked);
+    // console.log("selected ", checked);
 
     let currentValue = checked;
     if (currentValue == false) {
       return false;
     }
     if (currentValue === true) {
-      document.body.onmouseover = function (e) {
-        let ele = e.target;
+      document.body.onmouseover =
+        currentValue &&
+        function (e) {
+          let ele = e.target;
 
-        ele.onmouseover = function (ele) {
-          if (ele.target !== ele.currentTarget) {
-            return;
-          }
+          ele.onmouseover = function (ele) {
+            if (ele.target !== ele.currentTarget) {
+              return;
+            }
 
-          let element = ele.currentTarget;
-          element.classList.add("-sitemap-select-item-hover");
-          // console.log("currentTarget", element);
+            let element = ele.currentTarget;
+            element.classList.add("-sitemap-select-item-hover");
+            // console.log("currentTarget", element);
+          };
+
+          ele.onmouseout = function (ele) {
+            if (ele.target !== ele.currentTarget) {
+              return;
+            }
+
+            let element = ele.currentTarget;
+            element.classList.remove("-sitemap-select-item-hover");
+            // console.log("currentTarget", element);
+          };
         };
-
-        ele.onmouseout = function (ele) {
-          if (ele.target !== ele.currentTarget) {
-            return;
-          }
-
-          let element = ele.currentTarget;
-          element.classList.remove("-sitemap-select-item-hover");
-          // console.log("currentTarget", element);
-        };
-      };
     }
   }
   function turnOnSelector(classSelector) {
     // console.log("classSelector1", classSelector);
-    document.onclick = function (e) {
-      // console.log("element", e);
-      // let ans = cssPath(e.target);
-      // console.log("ans", ans);
-      var element = e.target;
-      var selector = element.tagName + ":nth-child(" + indexOf(element) + ")";
-      while ((element = element.parentElement) != null) {
-        if (element.tagName === "body") {
-          selector = "body > " + selector;
-          break;
+    let documentDiv = document;
+    if (!selectorMode) {
+      return;
+    }
+    documentDiv.onclick =
+      selectorMode &&
+      function (e) {
+        // console.log("element", selectorMode, e);
+        // let ans = cssPath(e.target);
+        // console.log("ans", ans);
+
+        if (document.getElementById("selector").target == e.target)
+          return;
+        var element = e.target;
+        var selector = element.tagName + ":nth-child(" + indexOf(element) + ")";
+        while ((element = element.parentElement) != null) {
+          if (element.tagName === "body") {
+            selector = "body > " + selector;
+            break;
+          }
+          selector =
+            element.tagName +
+            ":nth-child(" +
+            indexOf(element) +
+            ") > " +
+            selector;
         }
-        selector =
-          element.tagName +
-          ":nth-child(" +
-          indexOf(element) +
-          ") > " +
-          selector;
-      }
-      // console.log("selector: " + selector);
-      if (!multipleElement) {
-        selectedElementSelector = selector;
-      } else {
-        classSelector.push(selector);
-        let commonSelector = getCommonSelector(classSelector);
-      }
-      // console.log("classSelector2", classSelector);
-    };
+        console.log("selector: " + selector);
+        if (!multipleElement) {
+          selectedElementSelector.push(selector);
+        } else {
+          classSelector.push(selector);
+          let commonSelector = getCommonSelector(classSelector);
+        }
+        // console.log("classSelector2", classSelector);
+      };
   }
   function getCommonSelector(arr) {
     if (arr.length >= 2) {
@@ -244,7 +335,7 @@
         // console.log("el : ", element1[i] + "==" + element2[i]);
         if (element1[i] !== element2[i]) {
           count++;
-          element1[i] = element1[i].split(":").shift();
+          element1[i] = element1[i].split(":").shift() + "@";
         }
       }
       if (count > 1) {
@@ -253,7 +344,7 @@
         return false;
       } else {
         // console.log("final selector", element1.join(">"));
-        selectedElementSelector = element1.join(">");
+        selectedElementSelector = [element1.join(">")];
       }
 
       // console.log("element", element1, element2);
@@ -292,7 +383,7 @@
     const currData = {
       name: name,
       type: type,
-      selector: selectedElementSelector,
+      selector: selectedElementSelector[0],
       multiple: multipleElement,
     };
     if (dataObj["pageLink"] == undefined) {
