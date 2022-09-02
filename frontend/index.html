@@ -7,6 +7,7 @@
     <title>Data Scrapper</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="selectorMode.css" id="selectorMode" />
+
     <style>
       .selectorBox {
         max-width: 100px;
@@ -14,6 +15,9 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+      /* #formData {
+        display: none;
+      } */
     </style>
   </head>
   <body>
@@ -43,7 +47,25 @@
         />
       </div>
     </div>
+    <div id="selectedKeys">
+      <p id="pageUrl"></p>
+      <table>
+        <thead>
+          <tr>
+            <td>Id</td>
+            <td>Type</td>
+            <td>Selector</td>
+          </tr>
+        </thead>
+        <tbody id="selectedKeysbody"></tbody>
+      </table>
+    </div>
 
+    <div>
+      <button onclick="addNewSelector()" id="addNewSelector">
+        Add New Selector
+      </button>
+    </div>
     <form onsubmit="handleOnSubmit(event)" id="formData">
       <label for="">Page Url</label>
       <input type="url" name="link" id="link" placeholder="Page Url" />
@@ -64,62 +86,56 @@
       <label for="">Multiple select</label>
       <input type="checkbox" name="multiple" id="multiple" />
       <input type="submit" />
+      <button onclick="cancelAddNewSelector()">Cancel</button>
     </form>
-    <div id="selectedKeys">
-      <p id="pageUrl"></p>
-      <table>
-        <thead>
-          <tr>
-            <td>Id</td>
-            <td>Type</td>
-            <td>Selector</td>
-          </tr>
-        </thead>
-        <tbody id="selectedKeysbody"></tbody>
-      </table>
-    </div>
+
     <div>
-      <button id="scrapData">Scrap Data</button>
+      <button id="scrapData" onclick="scrapData()">Scrap Data</button>
     </div>
   </body>
 </html>
 
 <script>
-  //   document.getElementById("btn").addEventListener("click", function () {
-  //     console.log("Someone clicked me");
-
-  //     axios
-  //       .get("http://localhost:8080/scrapper")
-  //       .then((res) => console.log(res))
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   });
   function disableLink() {
     document.querySelector("a").onclick = function () {
       return false;
     };
   }
   // disableLink();
-
   const Tbody = document.getElementById("selectedKeysbody");
   const pageUrlTag = document.getElementById("pageUrl");
   let dataObj = JSON.parse(localStorage.getItem("keysData")) || {};
+  // appendData(details);
   let handleOnSelector = document.getElementById("selector");
   let handleMultiple = document.getElementById("multiple");
   let multipleElement = false;
   let selectedElementSelector = "";
-  handleOnSelector.onchange = function (e) {
-    console.log(e.target.checked);
-    if (e.target.checked) {
+
+  function addNewSelector() {
+    const form = document.getElementById("formData");
+    // form.style.display = "block";
+  }
+  function cancelAddNewSelector() {
+    const form = document.getElementById("formData");
+    // form.style.display = "none";
+  }
+
+  handleOnSelector.onchange = function (event) {
+    console.log(event.target.checked);
+    if (event.target.checked) {
       document.getElementById("selectorMode").disabled = false;
       disableLink();
+      // selectElement(event.target.checked);
+      let classSelector = [];
+      turnOnSelector(classSelector);
     } else {
       document.getElementById("selectorMode").disabled = true;
+      // selectElement(false);
     }
   };
   window.onload = function () {
     document.getElementById("selectorMode").disabled = true;
+    // selectElement(false);
   };
 
   handleMultiple.onclick = function (e) {
@@ -146,23 +162,103 @@
     }
     return -1;
   }
-  document.onclick = function (e) {
-    console.log("element", e);
-    // let ans = cssPath(e.target);
-    // console.log("ans", ans);
-    var element = e.target;
-    var selector = element.tagName + ":nth-child(" + indexOf(element) + ")";
-    while ((element = element.parentElement) != null) {
-      if (element.tagName === "body") {
-        selector = "body > " + selector;
-        break;
-      }
-      selector =
-        element.tagName + ":nth-child(" + indexOf(element) + ") > " + selector;
+  function selectElement(checked) {
+    console.log("selected ", checked);
+
+    let currentValue = checked;
+    if (currentValue == false) {
+      return false;
     }
-    console.log("selector: " + selector);
-    selectedElementSelector = selector;
-  };
+    if (currentValue === true) {
+      document.body.onmouseover = function (e) {
+        let ele = e.target;
+
+        ele.onmouseover = function (ele) {
+          if (ele.target !== ele.currentTarget) {
+            return;
+          }
+
+          let element = ele.currentTarget;
+          element.classList.add("-sitemap-select-item-hover");
+          // console.log("currentTarget", element);
+        };
+
+        ele.onmouseout = function (ele) {
+          if (ele.target !== ele.currentTarget) {
+            return;
+          }
+
+          let element = ele.currentTarget;
+          element.classList.remove("-sitemap-select-item-hover");
+          // console.log("currentTarget", element);
+        };
+      };
+    }
+  }
+  function turnOnSelector(classSelector) {
+    // console.log("classSelector1", classSelector);
+    document.onclick = function (e) {
+      // console.log("element", e);
+      // let ans = cssPath(e.target);
+      // console.log("ans", ans);
+      var element = e.target;
+      var selector = element.tagName + ":nth-child(" + indexOf(element) + ")";
+      while ((element = element.parentElement) != null) {
+        if (element.tagName === "body") {
+          selector = "body > " + selector;
+          break;
+        }
+        selector =
+          element.tagName +
+          ":nth-child(" +
+          indexOf(element) +
+          ") > " +
+          selector;
+      }
+      // console.log("selector: " + selector);
+      if (!multipleElement) {
+        selectedElementSelector = selector;
+      } else {
+        classSelector.push(selector);
+        let commonSelector = getCommonSelector(classSelector);
+      }
+      // console.log("classSelector2", classSelector);
+    };
+  }
+  function getCommonSelector(arr) {
+    if (arr.length >= 2) {
+      const [element1, element2] = arr.map((el) =>
+        el
+          .trim()
+          .split(">")
+          .map((ele) => ele.trim())
+      );
+
+      if (element1.length !== element2.length) {
+        alert("Different type element selection is disabled/ not allowed");
+        arr.length = 0;
+        return false;
+      }
+      let count = 0;
+      for (let i = 0; i < element1.length; i++) {
+        // console.log("el : ", element1[i] + "==" + element2[i]);
+        if (element1[i] !== element2[i]) {
+          count++;
+          element1[i] = element1[i].split(":").shift();
+        }
+      }
+      if (count > 1) {
+        alert("Different type element selection is disabled/ not allowed");
+        arr.length = 0;
+        return false;
+      } else {
+        // console.log("final selector", element1.join(">"));
+        selectedElementSelector = element1.join(">");
+      }
+
+      // console.log("element", element1, element2);
+    }
+  }
   var cssPath = function (el) {
     if (!(el instanceof Element)) return;
     var path = [];
@@ -196,6 +292,8 @@
     const currData = {
       name: name,
       type: type,
+      selector: selectedElementSelector,
+      multiple: multipleElement,
     };
     if (dataObj["pageLink"] == undefined) {
       dataObj["pageLink"] = pageLink;
@@ -211,6 +309,19 @@
     appendData(dataObj);
     localStorage.setItem("keysData", JSON.stringify(dataObj));
     console.log("Someone clicked me on new tab", dataObj);
+  }
+
+  function scrapData() {
+    console.log("Someone clicked me", dataObj);
+    axios
+      .post("http://localhost:8080/scrapper", dataObj)
+      .then((res) => {
+        console.log(res.data.message);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function appendData(details) {
