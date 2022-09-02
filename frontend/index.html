@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Scrapper</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="selectorMode.css" id="selectorMode" />
+    <style>
+      .selectorBox {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Data Scrapper</h1>
+    <div>
+      <div>
+        <div><p>klfsadjkl</p></div>
+        <div><p>fdklfjdas</p></div>
+        <div><p>fdklfjdas</p></div>
+        <div><p>fdklfjdas</p></div>
+        <div><p>fdklfjdas</p></div>
+        <div><p>fdklfjdas</p></div>
+        <div><p>fdklfjdas</p></div>
+        <div><p>fdklfjdas</p></div>
+        <div><p>fdklfjdas</p></div>
+      </div>
+      <br />
+      <a href="https://javascript.info/searching-elements-dom" target="_blank"
+        >link</a
+      >
+      <br />
+      <br />
+      <div>
+        <img
+          src="https://onemg.gumlet.io/images/c_fit,h_150,w_150,f_auto,q_auto/q9xnukhrycqpcypv7aeg/tata-1mg-apple-cider-vinegar-probiotic-plus-raw-unfiltered-unpasteurized-with-the-mother.jpg"
+          alt="pic"
+        />
+      </div>
+    </div>
+
+    <form onsubmit="handleOnSubmit(event)" id="formData">
+      <label for="">Page Url</label>
+      <input type="url" name="link" id="link" placeholder="Page Url" />
+      <br />
+      <label for="">KeyName</label>
+      <input type="text" name="name" id="name" placeholder="name" />
+      <br />
+      <label for="">Type</label>
+      <select name="type" id="type" placeholder="name">
+        <option value="text">text</option>
+        <option value="image">image</option>
+        <option value="link">link</option>
+        <option value="html">html</option>
+      </select>
+      <br />
+      <label for="">Css selector</label>
+      <input type="checkbox" name="selector" id="selector" />
+      <label for="">Multiple select</label>
+      <input type="checkbox" name="multiple" id="multiple" />
+      <input type="submit" />
+    </form>
+    <div id="selectedKeys">
+      <p id="pageUrl"></p>
+      <table>
+        <thead>
+          <tr>
+            <td>Id</td>
+            <td>Type</td>
+            <td>Selector</td>
+          </tr>
+        </thead>
+        <tbody id="selectedKeysbody"></tbody>
+      </table>
+    </div>
+    <div>
+      <button id="scrapData">Scrap Data</button>
+    </div>
+  </body>
+</html>
+
+<script>
+  //   document.getElementById("btn").addEventListener("click", function () {
+  //     console.log("Someone clicked me");
+
+  //     axios
+  //       .get("http://localhost:8080/scrapper")
+  //       .then((res) => console.log(res))
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   });
+  function disableLink() {
+    document.querySelector("a").onclick = function () {
+      return false;
+    };
+  }
+  // disableLink();
+
+  const Tbody = document.getElementById("selectedKeysbody");
+  const pageUrlTag = document.getElementById("pageUrl");
+  let dataObj = JSON.parse(localStorage.getItem("keysData")) || {};
+  let handleOnSelector = document.getElementById("selector");
+  let handleMultiple = document.getElementById("multiple");
+  let multipleElement = false;
+  let selectedElementSelector = "";
+  handleOnSelector.onchange = function (e) {
+    console.log(e.target.checked);
+    if (e.target.checked) {
+      document.getElementById("selectorMode").disabled = false;
+      disableLink();
+    } else {
+      document.getElementById("selectorMode").disabled = true;
+    }
+  };
+  window.onload = function () {
+    document.getElementById("selectorMode").disabled = true;
+  };
+
+  handleMultiple.onclick = function (e) {
+    if (e.target.checked) {
+      multipleElement = true;
+    } else {
+      multipleElement = false;
+    }
+  };
+
+  function indexOf(element) {
+    var parent = element.parentNode;
+    var child,
+      index = 1;
+    for (
+      child = parent.firstElementChild;
+      child;
+      child = child.nextElementSibling
+    ) {
+      if (child === element) {
+        return index;
+      }
+      ++index;
+    }
+    return -1;
+  }
+  document.onclick = function (e) {
+    console.log("element", e);
+    // let ans = cssPath(e.target);
+    // console.log("ans", ans);
+    var element = e.target;
+    var selector = element.tagName + ":nth-child(" + indexOf(element) + ")";
+    while ((element = element.parentElement) != null) {
+      if (element.tagName === "body") {
+        selector = "body > " + selector;
+        break;
+      }
+      selector =
+        element.tagName + ":nth-child(" + indexOf(element) + ") > " + selector;
+    }
+    console.log("selector: " + selector);
+    selectedElementSelector = selector;
+  };
+  var cssPath = function (el) {
+    if (!(el instanceof Element)) return;
+    var path = [];
+    while (el.nodeType === Node.ELEMENT_NODE) {
+      var selector = el.nodeName.toLowerCase();
+      if (el.id) {
+        selector += "#" + el.id;
+      } else {
+        var sib = el,
+          nth = 1;
+        while (
+          sib.nodeType === Node.ELEMENT_NODE &&
+          (sib = sib.previousSibling) &&
+          nth++
+        );
+        selector += ":nth-child(" + nth + ")";
+      }
+      path.unshift(selector);
+      el = el.parentNode;
+    }
+    return path.join(" > ");
+  };
+
+  function handleOnSubmit(event) {
+    event.preventDefault();
+    const form = document.getElementById("formData");
+    const pageLink = form.link.value;
+    const name = form.name.value;
+    const type = form.type.value;
+
+    const currData = {
+      name: name,
+      type: type,
+    };
+    if (dataObj["pageLink"] == undefined) {
+      dataObj["pageLink"] = pageLink;
+    }
+    if (dataObj["data"] == undefined) {
+      dataObj["data"] = [currData];
+    } else {
+      let preData = dataObj["data"];
+      preData.push(currData);
+      dataObj["data"] = preData;
+    }
+    form.reset();
+    appendData(dataObj);
+    localStorage.setItem("keysData", JSON.stringify(dataObj));
+    console.log("Someone clicked me on new tab", dataObj);
+  }
+
+  function appendData(details) {
+    // console.log(details);
+    // console.log(details.data);
+    let arrayData = details.data;
+    Tbody.innerHTML = null;
+    pageUrlTag.innerText = null;
+    pageUrlTag.innerText = details["pageLink"];
+
+    arrayData.map((el, i) => {
+      let tr = document.createElement("tr");
+      let id = document.createElement("td");
+      id.innerText = el.name;
+      let type = document.createElement("td");
+      type.innerText = el.type;
+      let selector = document.createElement("td");
+      selector.setAttribute("class", "selectorBox");
+      selector.innerText = el.selector;
+
+      tr.append(id, type, selector);
+
+      Tbody.append(tr);
+    });
+  }
+</script>
