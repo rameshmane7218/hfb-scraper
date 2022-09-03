@@ -1,6 +1,7 @@
 let page = document.getElementById("buttonDiv");
 let selectedClassName = "current";
-const presetButtonColors = ["#3aa757", "#e8453c", "#f9bb2d", "#4688f1"];
+const presetButtonColors = ["#3aa757", "#e8453c"];
+const modes = [true, false];
 
 // Reacts to a button click by making the selected button and saving
 // the selection
@@ -14,24 +15,35 @@ function handleButtonClick(event) {
   }
 
   // mark the button as selected
-  let color = event.target.dataset.color;
+  let selectedMode = event.target.dataset.mode;
   event.target.classList.add(selectedClassName);
-  chrome.storage.sync.set({ color });
+  if (selectedMode == "true") {
+    selectedMode = true;
+  } else {
+    selectedMode = false;
+  }
+  chrome.storage.sync.set({ selectedMode });
+  console.log(selectedMode);
 }
 
 // Add a button to the page for each supplied color
-function constructOptions(buttonColors) {
+function constructOptions(buttonColors, modes) {
   chrome.storage.sync.get("color", (data) => {
     let currentColor = data.color;
     // For each color we were porvided...
-    for (let buttonColor of buttonColors) {
+    for (let i = 0; i < buttonColors.length; i++) {
       // ...create a button with that color
       let button = document.createElement("button");
-      button.dataset.color = buttonColor;
-      button.style.backgroundColor = buttonColor;
+      button.dataset.mode = modes[i];
+      button.style.backgroundColor = buttonColors[i];
+      if (i == 0) {
+        button.innerText = "On";
+      } else if (i == 1) {
+        button.innerText = "Off";
+      }
 
       //...Mark the currently selected color...
-      if (buttonColor === currentColor) {
+      if (buttonColors[i] === currentColor) {
         button.classList.add(selectedClassName);
       }
 
@@ -42,4 +54,14 @@ function constructOptions(buttonColors) {
   });
 }
 
-constructOptions(presetButtonColors);
+constructOptions(presetButtonColors, modes);
+
+let handleMultiple = document.getElementById("multiple");
+
+handleMultiple.onclick = function (e) {
+  if (e.target.checked) {
+    chrome.storage.sync.set({ multipleElement: true });
+  } else {
+    chrome.storage.sync.set({ multipleElement: false });
+  }
+};

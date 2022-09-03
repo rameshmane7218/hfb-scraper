@@ -290,8 +290,7 @@
         // let ans = cssPath(e.target);
         // console.log("ans", ans);
 
-        if (document.getElementById("selector").target == e.target)
-          return;
+        if (document.getElementById("selector").target == e.target) return;
         var element = e.target;
         var selector = element.tagName + ":nth-child(" + indexOf(element) + ")";
         while ((element = element.parentElement) != null) {

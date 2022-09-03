@@ -142,7 +142,7 @@ app.post("/scrapper", (req, res) => {
     // }
 
     // await fs.writeFile("name.txt", names.join("\r\n"));
-    // await fs.writeFile("data.json", JSON.stringify({ data: name }));
+    // await fs.writeFile("data.json", JSON.stringify({ data: names }));
 
     await browser.close();
 
@@ -153,6 +153,10 @@ app.post("/scrapper", (req, res) => {
     }
   }
 });
+
+// app.get("/data", (req, res) => {
+//   res.sendFile(__dirname + "/data.json");
+// });
 
 app.listen(PORT, () => {
   console.log("listening on port " + PORT);
