@@ -2,6 +2,7 @@
 const CSS = `div:hover {
   background-color: rgb(207, 249, 235);
 }
+
 ul:hover {
   outline: 2px solid yellow !important;
   background-color: rgb(207, 249, 235);
@@ -35,12 +36,18 @@ const aScript = {
   matches: ["http://127.0.0.1:5500/*"],
 };
 let selector = document.getElementById("selector");
-
+function getValue() {
+  chrome.storage.sync.get("selectedMode", ({ selectedMode }) => {
+    return selectedMode;
+  });
+}
 selector.onchange = async function (event) {
   try {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     console.log("event", event);
     if (event.target.checked == true) {
+      chrome.storage.sync.set({ selectedMode: true });
+
       chrome.scripting.executeScript({
         files: ["./actions/content.js"],
         target: { tabId: tab.id },
@@ -53,6 +60,7 @@ selector.onchange = async function (event) {
       });
     } else {
       // chrome.scripting.unregisterContentScripts({ ids: [aScript] });
+      chrome.storage.sync.set({ selectedMode: false });
       chrome.scripting.removeCSS({
         target: { tabId: tab.id },
         css: CSS,
@@ -77,4 +85,56 @@ function setBackgroundColor() {
   });
   let txt = "Ramesh Mane";
   chrome.storage.sync.set({ txt });
+}
+
+let selectedModeIs = document.getElementById("selectedModeIs");
+let mode = false;
+chrome.storage.sync.get("selectedMode", ({ selectedMode }) => {
+  if (selectedMode == true) {
+    selectedModeIs.style.backgroundColor = "#3aa757";
+    selectedModeIs.innerText = "On";
+    mode = true;
+  } else if (selectedMode == false) {
+    selectedModeIs.style.backgroundColor = "#e8453c";
+    selectedModeIs.innerText = "Off";
+    mode = false;
+  }
+});
+
+selectedModeIs.addEventListener("click", async () => {
+  try {
+    if (mode == true) {
+      let [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+
+      chrome.scripting.executeScript({
+        files: ["./actions/content.js"],
+        target: { tabId: tab.id },
+        // func: setBackgroundColor,
+      });
+      // chrome.scripting.registerContentScripts([aScript]);
+      chrome.scripting.insertCSS({
+        target: { tabId: tab.id },
+        css: CSS,
+      });
+    } else if (mode == false) {
+      chrome.scripting.removeCSS({
+        target: { tabId: tab.id },
+        css: CSS,
+      });
+
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: pageReload,
+      });
+    }
+  } catch (err) {
+    console.log("Something went wrong");
+  }
+});
+
+function pageReload() {
+  window.location.reload();
 }
