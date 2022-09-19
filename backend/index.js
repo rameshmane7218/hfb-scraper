@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 app.post("/scrapper", (req, res) => {
   const data = req.body;
-  console.log(data);
+  // console.log(data);
   const url = data.pageLink;
   let arr = data.data;
   start(arr, url);

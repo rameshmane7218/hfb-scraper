@@ -1,0 +1,245 @@
+#container {
+  max-width: 1280px;
+  margin: auto;
+  padding: 20px;
+}
+#selectedKeys {
+  max-width: 1280px;
+  margin: auto;
+  padding: 20px;
+}
+#selectedKeys > div:first-child {
+  font-size: 16px;
+}
+#selectedKeys table {
+  width: 100%;
+}
+#addSelector {
+  /* box-shadow: rgba(0, 0, 0, 0.215) 0px 10px 36px 0px,
+    rgba(54, 130, 165, 0.505) 0px 0px 0px 2px; */
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 10px;
+  display: none;
+}
+.newSelector {
+  padding: 20px 0;
+}
+
+#form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+#form label {
+  font-size: 16px;
+  font-weight: bold;
+}
+.formUrl {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.formUrl label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.formGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.formBtnGroup {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+}
+.formGroup > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 10px;
+}
+.formDescription {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 10px;
+}
+#form input[type="text"],
+input[type="url"] {
+  height: 35px;
+  border: 0.8px solid rgb(191, 191, 191);
+  border-radius: 5px;
+  padding-left: 10px;
+  font-size: 16px;
+}
+#form input[type="text"]:focus,
+input[type="url"]:focus {
+  outline: none;
+  border-color: #66afe9;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+}
+#form select {
+  height: 36px;
+  border: 0.8px solid rgb(191, 191, 191);
+  border-radius: 5px;
+  padding-left: 10px;
+  font-size: 16px;
+}
+#form select:focus {
+  outline: none;
+  border-color: #66afe9;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+}
+
+.formSubmitBtn {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 40px;
+}
+#saveSelector,
+#scrapData,
+#addNewSelector {
+  border: none;
+  color: #fff;
+  background-color: #337ab7;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px 30px;
+}
+#saveSelector:hover,
+#addNewSelector:hover {
+  background-color: #286090;
+}
+#scrapData {
+  background-color: #04aa6d !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#scrapData svg {
+  display: none;
+}
+#scrapData:hover {
+  background-color: #329571 !important;
+}
+#cancelSelector {
+  border: none;
+  color: #fff;
+  background-color: #d9534f;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px 30px;
+}
+#cancelSelector:hover {
+  background-color: #c9302c;
+}
+.deletedSeletor {
+  border: none;
+  color: #fff;
+  background-color: #d9534f;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 5px 10px;
+}
+.deletedSeletor:hover {
+  background-color: #c9302c;
+}
+
+thead {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+table,
+th,
+td {
+  text-align: center;
+  border: 1px solid rgb(191, 191, 191);
+  border-collapse: collapse;
+  padding: 5px 5px;
+  font-size: 16px;
+}
+
+tr > td:nth-child(3) {
+  max-width: 100px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+thead > tr {
+  border-bottom: 2px solid rgb(191, 191, 191);
+}
+tbody > tr:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+#buttonDiv {
+  display: flex;
+  gap: 20px;
+}
+
+.cssSelectorBtn {
+  outline: none;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 8px 40px !important;
+}
+.cssSelectorBtn.current {
+  box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+}
+
+.scrapAndDownload {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+}
+.scrapAndDownload > div {
+  width: 50%;
+}
+
+#downloadFile {
+  background-color: #04aa6d !important;
+  max-width: 120px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: none;
+}
+#downloadFile:hover {
+  background-color: #329571 !important;
+}
+#downloadFile a {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.btnLoading {
+  display: inline-block !important;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

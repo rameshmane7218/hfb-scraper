@@ -1,0 +1,44 @@
+.-sitemap-select-item-hover {
+  outline: 2px solid green !important;
+  background-color: rgba(0, 213, 0, 0.2) !important;
+  background: rgba(0, 213, 0, 0.2) !important;
+}
+
+.-sitemap-select-item-hover * {
+  background-color: rgba(0, 213, 0, 0.2) !important;
+  background: rgba(0, 213, 0, 0.2) !important;
+}
+
+.-sitemap-select-item-selected {
+  outline: 2px solid #c70000 !important;
+  background-color: rgba(213, 0, 0, 0.2) !important;
+  background: rgba(213, 0, 0, 0.2) !important;
+}
+
+.-sitemap-select-item-selected * {
+  background-color: rgba(213, 0, 0, 0.2) !important;
+  background: rgba(213, 0, 0, 0.2) !important;
+}
+.submitToolbar {
+  position: fixed !important;
+  top: 5px !important;
+  right: 2px !important;
+  z-index: 100001 !important;
+}
+.submitToolbar button {
+  z-index: 100001 !important;
+}
+.submit-selector {
+  border: 1px solid !important;
+  border-radius: 5px !important;
+  padding: 5px 10px !important;
+  color: #fff !important;
+  background-color: #5cb85c !important;
+  border-color: #4cae4c !important;
+  cursor: pointer !important;
+}
+.submit-selector:hover {
+  color: #fff !important;
+  background-color: #449d44 !important;
+  border-color: #398439 !important;
+}
