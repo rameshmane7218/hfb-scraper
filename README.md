@@ -1,2 +1,2 @@
 # hfb-scraper
-[] abc
+
